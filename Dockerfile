@@ -1,4 +1,4 @@
-FROM tomcat:7.0.82-alpine
+FROM openweb/oracle-tomcat:7-jre7
 LABEL author="Rafael Pereira<rafaelszp.info@gmail.com>"
 LABEL scmURL="https://github.com/rafaelszp/tomcat-jtds-keycloak"
 
@@ -9,7 +9,8 @@ ADD http://central.maven.org/maven2/net/sf/jasperreports/jasperreports-fonts/6.0
 RUN cd /usr/local/tomcat/lib/ && tar zxf keycloak-tomcat7-adapter-dist-3.4.0.Final.tar.gz && rm keycloak-tomcat7-adapter-dist-3.4.0.Final.tar.gz
 
 RUN rm /usr/local/tomcat/webapps/* -rf
-RUN mkdir /usr/local/tomcat/webapps/ROOT -p && touch /usr/local/tomcat/webapps/ROOT/index.html
-RUN mkdir /usr/local/tomcat/webapps/healthz -p && touch /usr/local/tomcat/webapps/healthz/index.html
+#RUN mkdir /usr/local/tomcat/webapps/ROOT -p && touch /usr/local/tomcat/webapps/ROOT/index.html
+#RUN mkdir /usr/local/tomcat/webapps/healthz -p && touch /usr/local/tomcat/webapps/healthz/index.html
 
-RUN apk update; apk add ttf-dejavu ttf-ubuntu-font-family ttf-freefont ttf-droid-nonlatin ttf-droid ttf-linux-libertine 
+#RUN apk update; apk add ttf-dejavu ttf-ubuntu-font-family ttf-freefont ttf-droid-nonlatin ttf-droid ttf-linux-libertine 
+RUN apt-get update; apt-get install ttf-dejavu fonts-freefont-ttf ttf-ubuntu-font-family fonts-linuxlibertine wget -y
