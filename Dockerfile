@@ -15,7 +15,7 @@ RUN rm /usr/local/tomcat/webapps/* -rf
 
 FROM azul/zulu-openjdk-alpine:8
 ENV PATH="/usr/local/tomcat/bin:${PATH}"
-RUN apk update; apk add ttf-dejavu ttf-ubuntu-font-family ttf-freefont ttf-droid-nonlatin ttf-droid ttf-linux-libertine bash
+RUN apk update; apk add ttf-dejavu ttf-ubuntu-font-family ttf-freefont ttf-droid-nonlatin ttf-droid ttf-linux-libertine bash curl
 COPY --from=tomcat9 /usr/local/tomcat /usr/local/tomcat
 
 ENTRYPOINT catalina.sh run
