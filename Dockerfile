@@ -1,7 +1,9 @@
 #FROM openweb/oracle-tomcat:7-jre7
-FROM tomcat:9-jre8-alpine
+FROM tomcat:9-jre8-alpine as tomcat9
 LABEL author="Rafael Pereira<rafaelszp.info@gmail.com>"
 LABEL scmURL="https://github.com/rafaelszp/tomcat-jtds-keycloak"
+#ENV PATH="/opt/zulu8.38.0.13-ca-jdk8.0.212-linux_x64/bin:${PATH}"
+#ENV JAVA_HOME="/opt/zulu8.38.0.13-ca-jdk8.0.212-linux_x64"
 
 ##ADDING LIBRARIES
 ADD http://central.maven.org/maven2/net/sourceforge/jtds/jtds/1.3.1/jtds-1.3.1.jar /usr/local/tomcat/lib/
@@ -10,8 +12,10 @@ ADD http://central.maven.org/maven2/net/sf/jasperreports/jasperreports-fonts/6.0
 RUN cd /usr/local/tomcat/lib/ && tar zxf keycloak-tomcat8-adapter-dist-3.4.0.Final.tar.gz && rm keycloak-tomcat8-adapter-dist-3.4.0.Final.tar.gz
 
 RUN rm /usr/local/tomcat/webapps/* -rf
-#RUN mkdir /usr/local/tomcat/webapps/ROOT -p && touch /usr/local/tomcat/webapps/ROOT/index.html
-#RUN mkdir /usr/local/tomcat/webapps/healthz -p && touch /usr/local/tomcat/webapps/healthz/index.html
 
-RUN apk update; apk add ttf-dejavu ttf-ubuntu-font-family ttf-freefont ttf-droid-nonlatin ttf-droid ttf-linux-libertine 
-#RUN apt-get update; apt-get install ttf-dejavu fonts-freefont-ttf ttf-ubuntu-font-family fonts-linuxlibertine wget -y
+FROM azul/zulu-openjdk-alpine:8
+ENV PATH="/usr/local/tomcat/bin:${PATH}"
+RUN apk update; apk add ttf-dejavu ttf-ubuntu-font-family ttf-freefont ttf-droid-nonlatin ttf-droid ttf-linux-libertine bash
+COPY --from=tomcat9 /usr/local/tomcat /usr/local/tomcat
+
+ENTRYPOINT catalina.sh run
