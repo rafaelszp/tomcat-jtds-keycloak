@@ -99,6 +99,10 @@ RUN apk add font-bitstream-speedo \
    
 RUN fc-cache -f
 
+RUN apk --no-cache add msttcorefonts-installer fontconfig && \
+    update-ms-fonts && \
+    fc-cache -f
+
 COPY --from=tomcat9 /usr/local/tomcat /usr/local/tomcat
 
 ENTRYPOINT catalina.sh run
